@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music-Player</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+        integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ=="
+        crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Jost:wght@500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="main_body">
+        <div class="container">
+            <div class="track">
+                <h2>Harry Potter</h2>
+            </div>
+            <h3 class="artist">HP-Ringtone</h3>
+            <div class="img">
+                <img src="images/img-1.jpg" alt="img-1">
+            </div>
+            <div>
+                <audio src="audio/track-1.mp3"></audio>
+                <div class="controls">
+                    <i id="prev" class="fas fa-backward"></i>
+                    <i id="play" class="fas fa-play"></i>
+                    <i id="next" class="fas fa-forward"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let play = document.getElementById('play');
+        let prev = document.getElementById('prev');
+        let next = document.getElementById('next');
+        let audio = document.querySelector('audio');
+        let artistDisplay = document.querySelector('h3');
+        let trackDisplay = document.querySelector('h2');
+        let img = document.querySelector('img');
+        let isPlaying = false;
+
+        let array = [
+            {
+                track: "Harry Potter",
+                artist: "HP-Ringtone",
+                name: "audio/track-1.mp3",
+                image: "images/img-1.jpg"
+            },
+            {
+                track: "Jack Sparrow",
+                artist: "Pirates of Carribean",
+                name: "audio/track-2.mp3",
+                image: "images/img-2.jpg"
+            },
+            {
+                track: "Avengers",
+                artist: "Marvel",
+                name: "audio/track-3.mp3",
+                image: "images/img-3.jpg"
+            }
+        ];
+        let arrayIndex = 0;
+
+        let playSong = (arrayIndex) => {
+            trackDisplay.textContent = array[arrayIndex].track;
+            artistDisplay.textContent = array[arrayIndex].artist;
+            audio.src = array[arrayIndex].name;
+            img.src = array[arrayIndex].image;
+            if (isPlaying) {
+                audio.play();
+            }
+        }
+        play.addEventListener("click", function () {
+            if (isPlaying == false) {
+                audio.play();
+                isPlaying = true;
+                play.classList.replace("fa-play", "fa-pause");
+            }
+            else {
+                audio.pause();
+                play.classList.replace("fa-pause", "fa-play");
+                isPlaying = false;
+            }
+        });
+
+        setInterval(function () {
+            if (audio.ended) {
+                playSong(((arrayIndex + 1) % array.length));
+            }
+        }, 1000);
+
+        function nextSong() {
+            arrayIndex = (arrayIndex + 1) % array.length;
+            playSong(arrayIndex);
+        }
+        function prevSong() {
+            arrayIndex = (arrayIndex - 1 + array.length) % array.length;
+            playSong(arrayIndex);
+        }
+
+        next.addEventListener('click', nextSong);
+        prev.addEventListener('click', prevSong);
+
+    </script>
+
+</body>
+
+</html>
